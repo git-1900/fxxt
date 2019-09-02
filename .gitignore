@@ -1,0 +1,8 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+/.vs
+*.csproj.user
+
+# Doc docx
+~$*.doc[x]
