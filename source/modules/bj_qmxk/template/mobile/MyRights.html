@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,user-scalable=no,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" name="viewport">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>我的权益</title>
+    <link rel="stylesheet" type="text/css" href="{BJ_QMXK_ROOT}/recouse/css/base1.css"/>
+    <script type="text/javascript" src="{BJ_QMXK_ROOT}/recouse/js/size.js"></script>
+    <script src="{BJ_QMXK_ROOT}/recouse/js/jquery.js"></script>
+	<style>
+    body{background:#f5f5f5;}
+header{height:0.95rem;background:#1b1b20;padding:0 0.2rem;overflow:hidden;position:relative;}
+header a.back{display:block;height:0.35rem;position:absolute;left:0.2rem;top:0.3rem;}
+header a.back img{float:left;width:0.17rem;height:0.31rem;}
+header a.back em{float:left;line-height:0.35rem;font-size:0.3rem;color:#fff;padding-left:0.2rem;}
+header a.share{display:block;height:0.1rem;position:absolute;right:0.2rem;top:0.42rem;}
+header a.share img{display:block;width:0.43rem;height:0.1rem;}
+header span{display:block;text-align:center;line-height:0.95rem;font-size:0.35rem;color:#fff;}
+
+/****************************我的权益*********************************/
+.My_con{background:#fff;}
+.My_con .My_con_One{border-bottom:1px solid #ddd;}
+.My_con .My_con_One li{float:left;width:20%;text-align:center;font-size: 0px;}
+.My_con .My_con_One li a{display:block;width:100%;margin:0.25rem 0 0.4rem;border-left:1px solid #ddd;}
+.My_con .My_con_One li:first-child a{border-left:none;}
+.My_con .My_con_One li a p{color:#050505;font-size:0.24rem;margin-top:0.15rem;}
+.My_con .My_con_One li a em {display:block;width:100%;}
+.My_con .My_con_One li a em img{width:0.5rem;height:0.5rem;}
+.My_con .My_con_Two li{font-size:0.24rem;padding:0.3rem 0.35rem;border-bottom:1px solid #ddd;}
+.My_con .My_con_Two li .yiji{background:url({BJ_QMXK_ROOT}/recouse/images/sh06.png) no-repeat left center;background-size:0.12rem 0.12rem;padding-left:0.3rem;}
+.Require h4.ico{background:url(../img/aboutico5.png) no-repeat right center;}
+.My_con .My_con_Two li .yiji p.ico{background:url({BJ_QMXK_ROOT}/recouse/images/sh00.png) no-repeat right center;background-size:0.23rem 0.12rem;color:#050505;}
+.My_con .My_con_Two li .yiji p.onico{background:url({BJ_QMXK_ROOT}/recouse/images/sh01.png) no-repeat right center;background-size:0.23rem 0.12rem;color:#050505;}
+.My_con .My_con_Two li .erji{display:none;padding-left:0.3rem;color:#373737;margin-top:0.4rem;}
+.My_con .My_con_Two li .erji em{color:#373737;}
+</style>
+</head>
+<body>
+
+<div class="My_con">
+    <div class="My_con_One">
+        <ul class="clearFix">
+            <li>
+                <a href="#">
+                    <em><img src="{BJ_QMXK_ROOT}/recouse/images/sh03.png"></em>
+                    <p>会员级别</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <em><img src="{BJ_QMXK_ROOT}/recouse/images/sh03.png"></em>
+                    <p>使用年限</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <em><img src="{BJ_QMXK_ROOT}/recouse/images/sh03.png"></em>
+                    <p>分享奖金</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <em><img src="{BJ_QMXK_ROOT}/recouse/images/sh03.png"></em>
+                    <p>当日分红</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <em><img src="{BJ_QMXK_ROOT}/recouse/images/sh03.png"></em>
+                    <p>消费折扣</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-------------->
+    <div class="My_con_Two">
+    	<ul>	
+    		<li>
+            	<div class="yiji">
+            		<p>会员级别</p>
+                </div>
+                <div class="erji">
+                	<em>您是{$user['card_name']}。</em>
+                </div>
+            </li>
+            <li>
+            	<div class="yiji">
+            		<p>使用年限</p>
+                </div>
+                <div class="erji">
+                	<em>{if $user['use_years']>0}您的会员卡使用年限为{$user['use_years']}年。{else}无{/if}</em>
+                </div>
+            </li>
+            <li>
+            	<div class="yiji">
+            		<p>分享奖金</p>
+                </div>
+                <div class="erji">
+                	<em>您的分享奖金为{$user['commission_ratio']}%。</em>
+                </div>
+            </li>
+            <li>
+            	<div class="yiji">
+            		<p>当日分红</p>
+                </div>
+                <div class="erji" style="">
+                	<em>您每日可获得的分红为0-{$user['upper_lim']}元。</em>
+                </div>
+            </li>
+            <li>
+            	<div class="yiji">
+            		<p>消费折扣</p>
+                </div>
+                <div class="erji" style="">
+                	<em>您的购物消费折扣为{$user['discount']}折。</em>
+                </div>
+            </li>
+    	</ul>
+    </div>
+</div>
+<!-- -->
+<script>
+$(function(){
+	$(".yiji p").addClass("ico");
+	$(".yiji p").click(function(){
+		$(this).toggleClass("onico");
+		$(this).parents(".yiji").next(".erji").slideToggle(500);
+	});
+});
+
+</script>
+
+<!-- -->
+
+<!-- -->
+<!-- -->
+</body>
+</html>

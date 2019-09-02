@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>个人中心</title>
+    <link rel="stylesheet" type="text/css" href="{BJ_QMXK_ROOT}/recouse/css/fd.css?v={BJ_QMXK_VERSION}">
+    <link href="{BJ_QMXK_ROOT}/recouse/css/bottom.css?x={BJ_QMXK_VERSION}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{BJ_QMXK_ROOT}/recouse/css/fcommom.css?v={BJ_QMXK_VERSION}">
+    <script src="{BJ_QMXK_ROOT}/recouse/js/jquery.js?v={BJ_QMXK_VERSION}"></script>
+    <script src="{BJ_QMXK_ROOT}/recouse/css/func.js?v={BJ_QMXK_VERSION}"></script>
+	<style>
+	.foot{
+		width:100%;
+		min-width:300px;
+		margin-top:10px;
+		margin-bottom:30px;
+		padding:10px 0;
+		color:#555;
+		text-align:center;
+		}
+	.foot a{
+		color:#555;
+		margin:0 3px;
+		}  
+</style>
+</head>
+
+<body class="body-gray">
+    <div class="panel memberhead">
+        <div class="header-l"><img class="icon-level-p1" src="{if empty($myheadimg['avatar'])}{BJ_QMXK_ROOT}/style/images/yh.png{else}{$myheadimg['avatar']}{/if}"/></div>
+            <div class="header-r">
+                <ul class="distributor-infor">
+                    <li><span class="distributor-infor-label">昵称：</span><span class="distributor-infor-c">{$profile['realname']}</span></li>
+                    <li><span class="distributor-infor-label">等级：</span><span class="distributor-infor-c">{if $profile['flag']==0}普通用户{else}{$vip['card_name']}{/if}(<a class="txt-link" href="javascript:;" >{$medal_name}</a>)</span>
+                    </li>
+                    <li><span class="distributor-infor-label">注册时间：</span><span class="distributor-infor-c">
+                       {php echo date('Y-m-d', $profile['createtime'])}</span>
+                    </li>
+                </ul>
+				
+            </div>
+    </div>
+    <!--head end-->
+    <!--count begin-->
+    <div class="row count">
+        <div class="small-4 large-3 mid" style="text-align:center;margin:auto">
+                <a href="#" class="count-a">
+                <p class="count-dis-mony">{$profile['credit2']}</p>
+                <span class="count-title">当前积分</span></a>
+        </div>
+    </div>
+     <!--count begin-->
+     {if $profile['flag']==1}
+    <div class="row count">
+        <div class="" >
+            {if count($myshare)>0}
+            <div class="header-l" style="margin-top:5px"><img class="icon-level-p1" src="{if empty($myshare[0]['avatar'])}{BJ_QMXK_ROOT}/style/images/yh.png{else}{$myshare[0]['avatar']}{/if}"  style="width:50px;height:50px"/></div>
+            <div class="header-r">
+                <ul class="distributor-infor" >
+
+                    <li><span class="distributor-infor-c" style='color:black'>{$myshare[0]['realname']}</span></li>
+
+                    <li><span class="distributor-infor-c" style='color:#A4A4A4'>无效</span></li>
+                </ul>
+                 
+            </div>
+            <div style="display:inline-block;margin:10px 20px">
+                还差一个有效客户就能兑换积分啦，赶快推广吧！</br>
+                <input type="button" class="btn" id="develope" style="margin-top:8px;width:120px;height:30px;border:none;background-color:#0099FF;border-radius: 20px;" value='立即发展'>
+            </div>
+             {else}
+            <div  style="display:inline-block;margin:10px 20px">
+                每发展两个有效客户就可兑换积分。</br>
+                <input type="button" class="btn" id="develope"  style="margin-top:8px;width:120px;height:30px;border:none;background-color:#0099FF;border-radius: 20px;"  value='立即发展'>
+            </div>
+             {/if}
+        </div>
+    </div>
+     {/if}
+    <!--count end-->
+        <div class="text-center" style=" margin-top:5px;margin-bottom:5px; font-size:14px;">
+        	 	{if !empty($shareprofile['realname'])}
+        	你是由【{$shareprofile['realname']}】推荐
+        		{else} 
+        	你是由【{$_W['account']['name']}】推荐
+         	{/if} 
+        </div>
+{if $profile['flag']==1}
+    <div class="panel member-nav">
+        <ul class="side-nav">
+		<li><a href="{php echo $this->createMobileUrl('Erwema')}"><i class="icon-qrcode"></i><span class="text">我的二维码</span><i class="arrow"></i></a></li>
+		<li><a href="javascript:void(0)"><i class="icon-card"></i><span class="text">我的提佣比例为{$vip['commission_ratio']}%</span></a></li>
+                <li><a  href="{php echo $this->createMobileUrl('myfansDetail',array('level'=>1,'flag'=>1))}"><i class="icon-lowLevel"></i><span class="text">我的会员</span><i class="arrow"></i><span class="tip-number">{$count}</span></a></li>
+                <li><a href="{php echo $this->createMobileUrl('CreditDetail')}"><i class="icon-ratio"></i><span class="text">积分明细</span><i class="arrow"></i></a></li>
+                <li><a href="{php echo $this->createMobileUrl('MyRights')}"><i class="icon-client"></i><span class="text">我的权益</span><i class="arrow"></i></a></li>
+        </ul>
+    </div>
+{/if}
+<div id="mcover"  onclick="document.getElementById('mcover').style.display='';" style="display:none;">
+
+<div class="qrcode-box" >
+		<div class="comment" >
+      <ul>		
+        <li><img alt="Wxmenu" src="{BJ_QMXK_ROOT}/recouse/images/guide.png" style="height:264px;width:182px"/> </li>
+          <li><br/></li>
+         <li>或者： 邀请好友扫二维码</li>
+      </ul>
+      <div class="qrcode"><img src="{BJ_QMXK_ROOT}/style/images/share/share_qrx{$profile['id']}.png" style="height:200px;width:200px"/></div>
+      <div class="know"><a class="btn-know">知道了</a></div>
+    </div>
+</div>   
+	</div>
+    <!--side nav end-->
+ <!--bottom begin
+    <div class="h50"></div>-->
+  {template 'footer'}
+   <!--bottom end-->
+{template 'wx_nav'}
+</body>
+<style>
+    #mcover {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    z-index: 20000;
+}
+/*#mcover img {
+    position: fixed;
+    right: 18px;
+    top: 5px;
+    width: 260px!important;
+    height: 180px!important;
+    z-index: 20001;
+}*/
+</style>
+<script src="{BJ_QMXK_ROOT}/style/js/zepto.min.js"></script>
+<script>
+    $(document).on('click','#develope',function(){
+        var flag = {$profile['flag']};
+        if (flag == 0) {
+            alert("您还不是代理，无法发展！");
+        }else {
+            document.getElementById('mcover').style.display='block';
+            WeixinJSBridge.call('showOptionMenu');
+        }
+    });
+
+</script>
+</html>

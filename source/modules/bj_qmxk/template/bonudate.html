@@ -1,0 +1,231 @@
+{template 'common/header'}
+{if $op == 'display'}
+<ul class="nav nav-tabs">
+    <li><a href="{php echo $this->createWebUrl('bonudate');}">分红日期设定</a></li>
+</ul>
+<div class="main" >
+    <div class="stat">
+        <div class="stat-div">
+            <div class="navbar navbar-static-top">
+                <div class="navbar-inner">
+                    <span class="pull-right" style="color:red; padding:10px 10px 0 0;"></span>
+                    <span class="brand">列表</span>
+                </div>
+            </div>
+            <div class="sub-item" id="table-list" style="">
+                <form action="" method="post" onsubmit="">
+                <div class="sub-content">
+                    <table class="table table-hover">
+                        <thead class="navbar-inner">
+                            <tr>
+                                <th class="row-hover">日期（月份）</th>
+                                <th class="row-hover">每月分红日</th>
+                                <th class="row-hover">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {loop $list $v}
+                            <tr>
+                                <td style="text-align: center;">
+                                        {$v['month']}
+                                </td>
+                                <td style="text-align: center;">
+                                        {if $v['days']!=""}{$v['days']}{else}暂无设定{/if}
+                                </td>
+                                <td style="text-align: center;">
+                                    <a href="{php echo $this->createWebUrl('bonudate',array('op'=>'setdate','ym'=>$v['month']));}" class="btn btn-primary">编辑分红日期</a>	
+                                </td>
+                            </tr>
+                            {/loop}
+                        </tbody>
+                    </table>
+                </div>
+                </form>
+                {$pager}
+            </div>
+        </div> 
+    </div>
+</div>
+{else if $op=='setdate'}
+<!-- 兼容旧版 start -->
+<link rel="stylesheet" href="{BJ_QMXK_ROOT}/style/css/amazeui.min.css" />
+<!-- 兼容旧版 end -->
+<link rel="stylesheet" type="text/css" href="{BJ_QMXK_ROOT}/style/css/layout.css">
+<input type="hidden" name="bds" id="bds" value="{$bds['days']}">
+    <div class="f_r xa-content-main" >
+
+        <div class="admin-content">
+        	<br />
+        	<div class="am-g">
+                <div class="am-u-sm-4"><a type="button" href="javascript:history.back(-1)" class="am-btn am-btn-secondary am-btn-sm"><span class="am-icon-reply"> </span>返回</a>&nbsp;&nbsp;&nbsp;<strong>{$ym}&nbsp;&nbsp;&nbsp; 分红日选择</strong></div>
+                <div class="am-u-sm-8"></div>
+            </div>
+            <br />
+            <form id="dateForm" method="post" action="">
+                <div class="am-g xa-date">
+                    <div class="am-u-sm-12">
+                        <div class="xa-date-li">
+                            <button type="button" class="am-btn am-btn-default" disabled="disabled">日</button>
+                            <button type="button" class="am-btn am-btn-default" disabled="disabled">一</button>
+                            <button type="button" class="am-btn am-btn-default" disabled="disabled">二</button>
+                            <button type="button" class="am-btn am-btn-default" disabled="disabled">三</button>
+                            <button type="button" class="am-btn am-btn-default" disabled="disabled">四</button>
+                            <button type="button" class="am-btn am-btn-default" disabled="disabled">五</button>
+                            <button type="button" class="am-btn am-btn-default" disabled="disabled">六</button>
+                        </div>
+                        <div class="xa-date-li">
+
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="am-g">
+                    <div class="am-u-sm-12">
+                    <input type="hidden" name="token" value="{$_W['token']}" />
+                    <input type='hidden' name="ym" value="{$ym}">
+                    <input name="submit" type="submit" value="提交" class="am-btn am-btn-primary submit" />
+                    </div>
+                </div>
+                <!--<input type="hidden" name="__hash__" value="dc632a182db33c814a9fbf22607c9866_a03ff160deee814de1a5370f645e56b2" />-->
+            </form>
+                <br />
+        </div>
+        <!-- content end -->
+    </div>
+<script src="{BJ_QMXK_ROOT}/style/js/amazeui.min.js"></script>
+<!--<![endif]-->
+<script src="{BJ_QMXK_ROOT}/style/js/app.js"></script>
+<!-- 兼容旧版页面 end -->
+
+<script type="text/javascript" src="{BJ_QMXK_ROOT}/style/js/main.common.js"></script>
+<script>
+
+      var dateFormSelect = {
+          f:false,
+          eventsSetting :{
+            '.submit click' :  'checkForm'
+          },
+          templates : function(){
+              var _this = this,text='';
+              arguments[1].forEach(function(e){
+                 if(typeof(_this[i])!="function") text+=e;
+              })
+               document.querySelector(arguments[0]) ? parentNode = document.querySelector(arguments[0]) : parentNode = $(arguments[0]);
+               if(!parentNode)console.log('error:no select element');
+               if($(arguments[0]).length == 2)
+                 if($(arguments[0]).eq(1)) $(arguments[0]).eq(1).append(text);
+               else
+                  if($(arguments[0])) $(arguments[0]).append(text);
+          },
+          dateSelectHtml : function(){
+              var bds = $("#bds").val();
+              var bds_arr = bds.split(",");
+              var count = arguments[0],el = arguments[1],html =[],cssText ='color:#333;margin-right:4.2px;',_this = this,weekDay = arguments[2];
+              if(weekDay != 0)  cssText ='color:#333;margin-right:4.45px;'; //不是周末
+              this.weekDayFormat(weekDay,html);
+              for(i=1;i<=count;i++){
+                  var m = false;
+                  $.each(bds_arr,function(k,v){
+                      if (parseInt(v)==i) {
+                          m = true;
+                          return;
+                      }
+                  });
+                  if(m){
+                    html.push('<div style="float:left;" class="div_select"><button type="button" class="am-btn am-btn-default select-btn am-btn-warning" style="'+ cssText +'" id="'+i+'" flag="true" onClick="dateFormSelect.selectProcess('+i+')">'+ i +'</button><input type="hidden" value="'+ i +'"  name="day[]"/></div>');
+                  }else {
+                    html.push('<div style="float:left;" class="div_select"><button type="button" class="am-btn am-btn-default select-btn" style="'+ cssText +'" id="'+i+'" flag="" onClick="dateFormSelect.selectProcess('+i+')">'+ i +'</button><input type="hidden" value=""  name="day[]"/></div>');
+                  }
+              }
+              this.templates.apply(this,[el,html]);
+          },
+          render : function(){
+              this.init();
+
+              this.selectProcess();
+              this.dateSelectHtml.call(this,arguments[0],arguments[1],arguments[2]);
+          },
+          selectProcess : function(j){
+            var len = $('.div_select').length;
+            for(i=0;i<=len;i++){
+                selBtn = $('.div_select').eq(i).children('button');
+                if(j ==  selBtn.attr('id')) this.toggle(selBtn,i,this.f,this.fs);
+            }
+          },
+          toggle: function(obj,j,f,fs){
+              if(!obj.attr('flag')){
+                obj.addClass('am-btn-warning');
+                obj.next('input').val((j+1));
+                obj.attr('flag','true');
+                this.f = !f;
+              }else{
+                obj.removeClass('am-btn-warning');
+                obj.next('input').val('');
+                obj.attr('flag','');
+                this.f = !f;
+              }
+
+          },
+          weekDayFormat : function(weekDay,html){
+            var arr = [1,2,3,4,5,6];
+            for(i in arr){
+              if(arr[i] == weekDay){
+                for(i=0;i<weekDay;i++){
+                    html.push('<div style="float:left;"  ><div class="am-btn am-btn-default select-btn" style="margin-right:4.5px;"></div></div>');
+                }
+              }
+            }
+          },
+          init : function(){
+              for (var prop in this.eventsSetting) {
+                    var props = prop.split(' ');
+                    if (this.eventsSetting.hasOwnProperty(prop)) {
+                       var evenetFnRun = this.eventsSetting[prop[0]];
+                       if(props[1] == 'click' || props[1] == 'mouseover' || props[1] == 'mouseout' || props[1] == 'scroll'){
+                         if($(props[0])){
+                           if(props[1] == 'click' ) $(props[0]).click(events[this.eventsSetting[prop]]);
+                           if(props[1] == 'mouseover') $(props[0]).mouseover(events[this.eventsSetting[prop]]);
+                           if(props[1] == 'mouseout') $(props[0]).mouseout(events[this.eventsSetting[prop]]);
+                           if(props[1] == 'scroll')  $(props[0]).scroll(events[this.eventsSetting[prop]]);
+                         }else
+                             if(document.querySelector) document.querySelector(props[0])['on' + props[1]] = events[this.eventsSetting[prop]];
+                       }else
+                        return 'events undefined error';
+                    }else{
+                      console.log('Uncaught TypeError:this.eventsSetting is not a function');
+                    }
+              }
+          }
+
+      }
+
+      var events = {
+        checkForm : function(){
+          var flag =0;
+
+          for(i=0;i<$('.div_select').length;i++){
+              var f = $('.div_select').eq(i).find('input').val().length;
+              if(f) flag = f;
+          }
+          if(flag < 1){
+              alert('必须选择日期！');
+              return false;
+          }
+
+          $('#dateForm').submit();
+        },
+
+      }
+
+      ;(function(){
+            /*
+            @param num 日期天数 31 28 29 30
+            @param obj     单前日期元素对象
+			@param obj     当前日期礼拜几
+            */
+             dateFormSelect.render({$dnums},'.xa-date-li',{$w});
+      })();
+
+</script>
+{/if}
+{template 'common/footer'}

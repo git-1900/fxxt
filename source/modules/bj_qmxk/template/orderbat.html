@@ -1,0 +1,121 @@
+{template 'common/header'}
+{template 'common'}
+<ul class="nav nav-tabs">
+{if empty($shareid)}
+		<li {if $operation == 'display' && $status == '1'}class="active"{/if}><a href="{php echo $this->createWebUrl('order', array('op' => 'display', 'status' => 1))}">待发货</a></li>
+	<li {if $operation == 'display' && $status == '0'}class="active"{/if}><a href="{php echo $this->createWebUrl('order', array('op' => 'display', 'status' => 0))}">待付款</a></li>
+	<li {if $operation == 'display' && $status == '2'}class="active"{/if}><a href="{php echo $this->createWebUrl('order', array('op' => 'display', 'status' => 2))}">待收货</a></li>
+	<li {if $operation == 'display' && $status == '3'}class="active"{/if}><a href="{php echo $this->createWebUrl('order', array('op' => 'display', 'status' => 3))}">已完成</a></li>
+	<li {if $operation == 'display' && $status == '-2'}class="active"{/if}><a href="{php echo $this->createWebUrl('order', array('op' => 'display', 'status' => -2))}">退款中</a></li>
+<li {if $operation == 'display' && $status == '-3'}class="active"{/if}><a href="{php echo $this->createWebUrl('order', array('op' => 'display', 'status' => -3))}">换货中</a></li>
+	<li {if $operation == 'display' && $status == '-4'}class="active"{/if}><a href="{php echo $this->createWebUrl('order', array('op' => 'display', 'status' => -4))}">退货中</a></li>
+	<li {if $operation == 'display' && $status == '-1'}class="active"{/if}><a href="{php echo $this->createWebUrl('order', array('op' => 'display', 'status' => -1))}">已关闭</a></li>
+	<li {if $operation == 'display' && $status == '-99'}class="active"{/if}><a href="{php echo $this->createWebUrl('order', array('op' => 'display', 'status' => -99))}">全部订单</a></li>
+	{/if}
+</ul>
+
+{if $operation == 'display'}
+<form action="" method="post">
+				<input type="hidden" name="act" value="module" />
+				<input type="hidden" name="name" value="bj_qmxk" />
+				<input type="hidden" name="do" value="order" />
+				<input type="hidden" name="op" value="display" />
+					<input type="hidden" name="status" value="{$status}" />
+				
+			 <span style="float:left;margin-left:30px;padding-top:15px;">批量设置快递公司:<select  name="expressall" id="expressall" >
+									{template 'orderbatexpress'}
+								</select> </span>
+   
+<div class="main">
+	<div style="padding:15px;">
+		<table class="table table-hover">
+			<thead class="navbar-inner">
+				<tr>
+					 	{if 	$status==1}		<th style="width:30px;"> <input type="checkbox" class="check_all" /></th>
+				<th style="width:100px;" id="expressno">快递公司</th>      {/if}
+					<th style="width:120px;">快递单号</th>
+					<th style="width:120px;">订单编号</th>
+					<th style="width:100px;">收货人姓名</th>
+					<th style="width:80px;">联系电话</th>
+					<th style="width:80px;">支付方式</th>
+					<th style="width:80px;">配送方式</th>
+					<th style="width:50px;">运费</th>			
+					<th style="width:50px;">总价</th>           
+					<th style="width:150px;">下单时间</th>
+				
+				</tr>
+			</thead>
+			<tbody id="allorders">
+				{loop $list $item}
+				<tr>
+					{if 	$status==1}		<td class="with-checkbox">  <input type="checkbox" onchange="onchangcheckbox();" name="check[]" value="{$item['id']}"></td>
+							<td  ><select onchange="onchangcheckbox();" name="express{$item['id']}" id="express{$item['id']}" >
+									{template 'orderbatexpress'}
+								</select> <input type='hidden'  name='expresscom{$item['id']}' id='expresscom{$item['id']}'  />
+								</td>
+				{/if}
+				
+				<td><input type="text" id="expressno{$item['id']}" name="expressno{$item['id']}"  placeholder="请输入快递单号"  value="">
+								</td>
+					<td>{$item['ordersn']}
+								</td>
+					<td>{$address[$item['addressid']]['realname']}</td>
+					<td>{$address[$item['addressid']]['mobile']}</td>
+					<td>{if $item['paytype'] == 1}<span class="label label-important">余额支付</span>{/if}{if $item['paytype'] == 2}<span class="label label-important">在线支付</span>{/if}{if $item['paytype'] == 3}<span class="label label-warning">货到付款</span>{/if}</td>
+			
+					<td>{if empty($item['dispatch'])}自提{else}快递配送{/if}</td>
+                                        <td>{$item['dispatchprice']}</td>
+					<td>{$item['price']} 元</td>
+					<td>{php echo date('Y-m-d H:i:s', $item['createtime'])}</td>
+		
+				
+				</tr>
+				{/loop}
+				
+				
+			</tbody>
+			
+		</table>
+		<table><tr><td style="width:150px"><button type="submit"  name="sendbatexpress" value="sendbatexpress" class="btn btn-warning btn-lg">批量发货</button></td></tr></table>
+		 <input type="hidden" name="token" value="{$_W['token']}" />
+		</form>
+		{$pager}
+	</div>
+</div>
+<script>
+
+	function onchangcheckbox()
+	{
+		
+                 
+                    $("input[name='check[]']").each(function(){ 
+          
+            var obj = $("#express"+$(this).val());  
+            var sel =obj.find("option:selected").attr("data-name");
+        
+            $("#expresscom"+$(this).val()).val(  sel );
+										}); 
+											
+		
+	}
+	onchangcheckbox();
+     $(function(){
+                  $("#expressall").change(function(){
+          var obj = $(this);
+          var target_val =obj.find("option:selected").val();
+          $("#allorders select").each(function() {
+            var obj = $(this);
+            console.log(obj);
+            obj.val(target_val);
+          });
+          	onchangcheckbox();
+        });
+            $(".check_all").click(function(){
+            var checked = $(this).get(0).checked;
+                    $("input[type=checkbox]").attr("checked", checked);
+                    
+            });
+             });
+	</script>
+{/if}
+{template 'common/footer'}
